@@ -5,6 +5,7 @@ import App from './App'
 import router from './router'
 import portService from './assets/js/service/http'
 
+Vue.prototype.portService = portService
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */
@@ -15,4 +16,3 @@ new Vue({
   template: '<App/>'
 })
 
-Vue.prototype.portService = portService

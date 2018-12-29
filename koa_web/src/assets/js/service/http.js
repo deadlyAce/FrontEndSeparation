@@ -2,7 +2,7 @@ import axios from 'axios';
 
 let portService = {
   getMess: function() {
-    let messUrl = '/api/mess';
+    let messUrl = '/api/users';
     return axios.get(messUrl);
   }
 };

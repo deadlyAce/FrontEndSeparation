@@ -1,10 +1,13 @@
-<template>
+ <template>
   <div class="hello">
      <button @click="getMess">点击</button>
+     <button @click="sendWs">send websocket</button>
   </div>
 </template>
 
 <script>
+import webSocket from '@/assets/js/service/websocket';
+let vm = null;
 export default {
   name: 'HelloWorld',
   data () {
@@ -12,11 +15,31 @@ export default {
       msg: 'Welcome to Your Vue.js App'
     }
   },
+  mounted() {
+      webSocket.onopen = () => {
+        webSocket.send('success');
+      };
+
+      // 监听webSocket返回的数据,更新到vuex中
+      webSocket.onmessage = res => {
+        console.log(res);
+      };
+  },
   methods: {
     getMess: function () {
        this.portService.getMess().then(res => {
           console.log(res);
        })
+    },
+    sendWs() {
+      if (webSocket.readyState === 3) {
+        webSocket.onopen = () => {
+          webSocket.send(JSON.stringify({ a: 1}));
+        };
+      }
+      else{
+        webSocket.send(JSON.stringify({ a: 1}));
+      }
     }
   }
 }

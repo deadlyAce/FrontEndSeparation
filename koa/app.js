@@ -7,8 +7,10 @@ const bodyparser = require('koa-bodyparser')
 const logger = require('koa-logger')
 const cors = require('koa2-cors');
 
+
 const index = require('./routes/index')
 const users = require('./routes/users')
+const ws = require('./public/javascripts/websocket/ws.js')
 
 // error handler
 onerror(app)
@@ -21,6 +23,7 @@ app.use(json())
 app.use(logger())
 app.use(require('koa-static')(__dirname + '/public'))
 
+// 打开cors端口,实现跨域请求
 app.use(cors({
     origin: function(ctx) {
         return '*';
@@ -28,7 +31,7 @@ app.use(cors({
     exposeHeaders: ['WWW-Authenticate', 'Server-Authorization'],
     maxAge: 5,
     credentials: true,
-    allowMethods: ['GET', 'POST', 'DELETE', 'get'],
+    allowMethods: ['GET', 'POST', 'DELETE', 'PUT'],
     allowHeaders: ['Content-Type', 'Authorization', 'Accept'],
 }));
 
@@ -48,5 +51,8 @@ app.use(users.routes(), users.allowedMethods())
 app.on('error', (err, ctx) => {
   console.error('server error', err, ctx)
 });
+
+
+
 
 module.exports = app
